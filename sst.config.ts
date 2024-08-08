@@ -10,6 +10,16 @@ export default $config({
         aws: {
           region: "us-east-1"
         }
+      },
+      autodeploy: {
+        target(event) {
+          if (event.type === "branch" && event.branch === "main" && event.action === "pushed") {
+            return {
+              stage: "production",
+              runner: { engine: "codebuild", compute: "large" }
+            };
+          }
+        }
       }
     };
   },
